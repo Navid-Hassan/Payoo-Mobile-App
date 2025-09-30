@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- daisy ui -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- tailwind css -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-[#f4f5f7] h-[100vh]">
+    <header class="bg-white">
+      <nav
+        class="flex justify-between items-center p-[20px] max-w-lg mx-auto border-b border-gray-350"
+      >
+        <div class="flex items-center">
+          <img src="./assets/Group.png" alt="" />
+          <div>
+            <h2 class="font-bold">$<span id="available-balance">45000</span></h2>
+            <p class="text-grey-900">Available Balance</p>
+          </div>
+        </div>
+        <button id="logout-button" class="btn rounded-[8px] text-[#08080880]">
+          <img
+            src="./assets/logout.png"
+            class="brightness-50 rotate-180"
+            alt=""
+          />Log Out
+        </button>
+      </nav>
+
+      <div class="max-w-lg mx-auto mt-[20px]">
+        <h1 class="text-1xl font-bold">🔥 Welcome to Payooo!</h1>
+        <p class="text-[#08080880]">
+          Enjoy easy and convenient financial services with us. Cashout charge
+          is low and
+        </p>
+        <div class="mt-[24px] grid grid-rows-2 grid-cols-3 gap-4 pb-[40px]">
+          <div id="add-button"
+            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-200 cursor-pointer"
+          >
+            <img src="./assets/wallet1.png" class="h-[2rem] w-[2rem]" alt="" />
+            <p>Add Money</p>
+          </div>
+          <div id="cash-out-button"
+            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-200 cursor-pointer"
+          >
+            <img src="./assets/send1.png" class="h-[2rem] w-[2rem]" alt="" />
+            <p>Cashout</p>
+          </div>
+          <div id="transfer-button"
+            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-200 cursor-pointer"
+          >
+            <img src="./assets/money1.png" class="h-[2rem] w-[2rem]" alt="" />
+            <p>Transfer Money</p>
+          </div>
+          <div id="bonus-button"
+            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-200 cursor-pointer"
+          >
+            <img src="./assets/bonus1.png" class="h-[2rem] w-[2rem]" alt="" />
+            <p>Get Bonus</p>
+          </div>
+          <div id="payBill-button"
+            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-200 cursor-pointer"
+          >
+            <img src="./assets/purse1.png" class="h-[2rem] w-[2rem]" alt="" />
+            <p>Pay Bill</p>
+          </div>
+          <div id="transactions-button"
+            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-200 cursor-pointer"
+          >
+            <img
+              src="./assets/transaction1.png"
+              class="h-[2rem] w-[2rem]"
+              alt=""
+            />
+            <p>Transactions</p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="bg-[#f4f5f7] pb-[30px]">
+
+      <!-- Add Money  -->
+
+      <div id="add-money-parent" class="form max-w-lg mx-auto hidden">
+        <div class="font-bold text-2xl py-[20px]">Add Money</div>
+        <div class="bg-white p-[20px] rounded-[24px]">
+          <div>
+        <label class="font-semibold" for="">Select A Bank</label><br>
+        <select id="bank" class="select bg-[#F4F5F7] rounded-[32px] w-[100%]" >
+          <option disabled selected>Select bank</option>
+          <option>City</option>
+          <option>Brac</option>
+          <option>Islamic</option>
+        </select>
+      </div><br>
+      <div>
+        <label class="font-semibold" for="">Bank Account Number</label><br>
+        <input  id="account-number"
+          type="text"
+          placeholder="Enter 11 digit account number"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+      </div><br>
+      <div>
+        <label class="font-semibold" for="">Amount to Add</label><br>
+        <input id="add-amount"
+          type="text"
+          placeholder="Add Amount to withdraw"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+      </div><br>
+      <div>
+        <label class="font-semibold" for="">Pin Number</label><br>
+        <input id="add-pin"
+          type="text"
+          placeholder="Enter 4 digit pin number"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+      </div>
+        <button id="addMoney-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-[10px] w-[100%]">
+            <path
+              fill="white"
+              d="M8 12h5V8c0-6 4-7 11-6v5c-4 0-5 0-5 3v2h5l-1 6h-4v12h-6V18H8z"
+            ></path>
+          </svg>
+            Add Money
+        </button>
+        </div>
+      </div>
+
+      <!-- Cash Out -->
+
+      <div id="cash-out-parent" class="form max-w-lg mx-auto hidden">
+        <div class="font-bold text-2xl py-[20px]">Cash Out</div>
+        <div class="bg-white p-[20px] rounded-[24px]">
+          <form action="">
+            <div>
+              <label class="font-semibold" for="">Agent
+                Number</label><br>
+              <input  id="agent-number"
+          type="text"
+          placeholder="Enter 11 digit number"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+            </div>
+            <div>
+              <label class="font-semibold" for="">Amount</label><br>
+              <input  id="cash-out-amount"
+          type="text"
+          placeholder="Enter amount to withdraw"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+            </div>
+            <div>
+        <label class="font-semibold" for="">Pin Number</label><br>
+        <input id="cashout-pin"
+          type="text"
+          placeholder="Enter 4 digit pin number"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+      </div>
+       <button id="withdrawMoney-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-[10px] w-[100%]">
+            <path
+              fill="white"
+              d="M8 12h5V8c0-6 4-7 11-6v5c-4 0-5 0-5 3v2h5l-1 6h-4v12h-6V18H8z"
+            ></path>
+          </svg>
+            Withdraw Money
+        </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Transfer Money -->
+
+      <div id="transfer-money-parent" class="form max-w-lg mx-auto hidden">
+        <div class="font-bold text-2xl py-[20px]">Transfer Money</div>
+        <div class="bg-white p-[20px] rounded-[24px]">
+          <div>
+            <label class="font-semibold" for="">User Account Number</label><br>
+            <input  id="user-account"
+          type="text"
+          placeholder="Enter 11 digit number"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+          </div>
+          <div>
+              <label class="font-semibold" for="">Amount</label><br>
+              <input  id="transferred-amount"
+          type="text"
+          placeholder="Enter amount to transfer"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+            </div>
+            <div>
+        <label class="font-semibold" for="">Pin Number</label><br>
+        <input id="transfer-pin"
+          type="text"
+          placeholder="Enter 4 digit pin number"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+      </div>
+       <button id="transfer-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-[10px] w-[100%]">
+            <path
+              fill="white"
+              d="M8 12h5V8c0-6 4-7 11-6v5c-4 0-5 0-5 3v2h5l-1 6h-4v12h-6V18H8z"
+            ></path>
+          </svg>
+          Send Now        
+        </button>
+        </div>
+      </div>
+
+      <!-- Get Bonus -->
+
+      <div id="get-bonus-parent" class="form max-w-lg mx-auto hidden">
+        <div class="font-bold text-2xl py-[20px]">Get Bonus</div>
+        <div id="" class="bg-white p-[20px] rounded-[24px]">
+          <div>
+            <label class="font-semibold" for="">Enter Bonus Coupon</label><br>
+            <input  id=""
+          type="text"
+          placeholder="Enter your coupon"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+          </div>
+          <button id="" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-[10px] w-[100%]">
+            <path
+              fill="white"
+              d="M8 12h5V8c0-6 4-7 11-6v5c-4 0-5 0-5 3v2h5l-1 6h-4v12h-6V18H8z"
+            ></path>
+          </svg>
+            Get Bonus
+        </button>
+        </div>
+      </div>
+
+      <!-- Pay Bill -->
+
+      <div id="pay-bill-parent" class="form max-w-lg mx-auto hidden">
+        <div class="font-bold text-2xl py-[20px]">Pay Bill</div>
+        <div class="bg-white p-[20px] rounded-[24px]">
+          <div>
+        <label class="font-semibold" for="">Select To Pay</label><br>
+        <select id="payment-way" class="select bg-[#F4F5F7] rounded-[32px] w-[100%]" >
+          <option disabled selected>Select back</option>
+          <option>Bkash</option>
+          <option>Nagad</option>
+          <option>Upay</option>
+        </select>
+      </div><br>
+      <div>
+        <label class="font-semibold" for="">Biller Account Number</label><br>
+        <input  id="biller-account-number"
+          type="text"
+          placeholder="Enter account number"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+      </div><br>
+      <div>
+        <label class="font-semibold" for="">Amount to Pay</label><br>
+        <input id="pay-amount"
+          type="text"
+          placeholder="Add Amount to withdraw"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+      </div><br>
+      <div>
+        <label class="font-semibold" for="">Pin Number</label><br>
+        <input id="pay-bill-pin"
+          type="text"
+          placeholder="Enter 4 digit pin number"
+          class="input input-md bg-[#F4F5F7] p-[20px] rounded-[32px] my-[10px] w-[100%]"
+        />
+      </div>
+        <button id="payBill-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-[10px] w-[100%]">
+            <path
+              fill="white"
+              d="M8 12h5V8c0-6 4-7 11-6v5c-4 0-5 0-5 3v2h5l-1 6h-4v12h-6V18H8z"
+            ></path>
+          </svg>
+            Pay Now
+        </button>
+        </div>
+      </div>
+
+      <!-- Transactions -->
+      <div id="transaction-parent" class="form max-w-lg mx-auto hidden">
+        <div class="flex justify-between items-center">
+          <p class="font-bold text-2xl py-[20px]">Transaction History</p>
+          <p class="text-[#08080880]">View All</p>
+        </div>
+        <div id="transaction-container">
+          
+        </div>
+      </div>
+
+
+    </main>
+    <script src="./home.js"></script>
+  </body>
+</html>
