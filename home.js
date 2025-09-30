@@ -171,7 +171,9 @@ document.getElementById("transactions-button").addEventListener("click",function
         </div>
     ` 
 
-    transactionContainer.appendChild(div);
+    document.getElementById("view-all").addEventListener("click",function(e){
+      transactionContainer.appendChild(div);
+    })
   }
 })
 
