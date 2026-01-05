@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payooo - Bank Payment System</title>
+    <title>Payooo - Dashboard</title>
 
     <!-- daisy ui -->
     <link
@@ -15,319 +15,389 @@
     <!-- tailwind css -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     
-    <!-- Custom CSS for animations -->
+    <!-- Custom CSS -->
     <style>
-      /* Animation for balance update */
+      /* Balance update animation */
       .balance-updated {
         animation: balanceFlash 0.5s ease-in-out;
       }
       
       @keyframes balanceFlash {
         0% { background-color: transparent; }
-        50% { background-color: rgba(34, 197, 94, 0.2); }
+        50% { background-color: rgba(34, 197, 94, 0.15); }
         100% { background-color: transparent; }
       }
       
-      /* Animation for transaction items */
-      .fade-in {
-        animation: fadeIn 0.3s ease-out;
+      /* Transaction fade-in */
+      .transaction-fade-in {
+        animation: fadeInUp 0.3s ease-out;
       }
       
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(5px); }
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(8px); }
         to { opacity: 1; transform: translateY(0); }
       }
       
-      /* Success button effect */
-      .success-btn {
+      /* Button hover effects */
+      .action-btn {
         transition: all 0.2s ease;
       }
       
-      .success-btn:hover {
+      .action-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(26, 119, 242, 0.3);
+        box-shadow: 0 6px 16px rgba(26, 119, 242, 0.2);
+      }
+      
+      /* Form input focus */
+      .form-input:focus {
+        outline: none;
+        ring: 2px;
+        ring-color: #1A77F2;
+      }
+      
+      /* Prevent text overflow */
+      .truncate-2-lines {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
     </style>
   </head>
-  <body class="bg-[#f4f5f7] min-h-[100vh]">
-    <header class="bg-white">
-      <nav
-        class="flex justify-between items-center p-[20px] max-w-lg mx-auto border-b border-gray-350"
-      >
-        <div class="flex items-center">
-          <img src="./assets/Group.png" alt="Payooo Logo" />
-          <div class="ml-3">
-            <h2 class="font-bold text-lg">$<span id="available-balance">45000</span></h2>
-            <p class="text-grey-900 text-sm">Available Balance</p>
-            <p class="text-sm text-blue-600 font-medium" id="user-greeting">Welcome!</p>
+  <body class="bg-[#f4f5f7] min-h-screen">
+    <!-- Header -->
+    <header class="bg-white sticky top-0 z-10 shadow-sm">
+      <nav class="p-4 max-w-lg mx-auto">
+        <div class="flex items-center justify-between">
+          <!-- Logo and Balance -->
+          <div class="flex items-center space-x-3">
+            <img src="./assets/Group.png" alt="Payooo" class="h-10 w-10">
+            <div>
+              <div class="flex items-baseline space-x-1">
+                <span class="text-gray-500 text-sm">$</span>
+                <span id="available-balance" class="text-2xl font-bold text-gray-800">45,000</span>
+              </div>
+              <p class="text-xs text-gray-500">Available Balance</p>
+              <p id="user-greeting" class="text-xs text-blue-600 font-medium mt-0.5">Welcome!</p>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <button id="reset-demo-btn" class="btn btn-sm rounded-[8px] text-[#08080880] border border-gray-300 hover:bg-gray-100">
-            Reset Demo
-          </button>
-          <button id="logout-button" class="btn btn-sm rounded-[8px] text-[#08080880] border border-gray-300 hover:bg-gray-100">
-            <img
-              src="./assets/logout.png"
-              class="brightness-50 rotate-180 w-4 h-4 mr-1"
-              alt="Logout"
-            />Log Out
-          </button>
+          
+          <!-- Action Buttons -->
+          <div class="flex items-center space-x-2">
+            <button id="reset-demo-btn" 
+              class="btn btn-sm rounded-lg text-gray-600 bg-gray-100 border-gray-300 hover:bg-gray-200 px-3 h-9 text-xs">
+              Reset Demo
+            </button>
+            <button id="logout-button" 
+              class="btn btn-sm rounded-lg text-gray-600 bg-gray-100 border-gray-300 hover:bg-gray-200 px-3 h-9 text-xs flex items-center">
+              <img src="./assets/logout.png" class="h-3.5 w-3.5 mr-1.5 brightness-50 rotate-180" alt="">
+              Logout
+            </button>
+          </div>
         </div>
       </nav>
-
-      <div class="max-w-lg mx-auto mt-[20px] px-4">
-        <h1 class="text-xl font-bold">🔥 Welcome to Payooo!</h1>
-        <p class="text-[#08080880] mt-1">
-          Enjoy easy and convenient financial services with us. Cashout charge
-          is low and secure.
-        </p>
-        <div class="mt-[24px] grid grid-rows-2 grid-cols-3 gap-4 pb-[40px]">
-          <div id="add-button"
-            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-100 cursor-pointer transition-all duration-200"
-          >
-            <img src="./assets/wallet1.png" class="h-[2rem] w-[2rem]" alt="Add Money" />
-            <p class="mt-2 font-medium">Add Money</p>
-          </div>
-          <div id="cash-out-button"
-            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-100 cursor-pointer transition-all duration-200"
-          >
-            <img src="./assets/send1.png" class="h-[2rem] w-[2rem]" alt="Cash Out" />
-            <p class="mt-2 font-medium">Cash Out</p>
-          </div>
-          <div id="transfer-button"
-            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-100 cursor-pointer transition-all duration-200"
-          >
-            <img src="./assets/money1.png" class="h-[2rem] w-[2rem]" alt="Transfer" />
-            <p class="mt-2 font-medium">Transfer</p>
-          </div>
-          <div id="bonus-button"
-            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-100 cursor-pointer transition-all duration-200"
-          >
-            <img src="./assets/bonus1.png" class="h-[2rem] w-[2rem]" alt="Bonus" />
-            <p class="mt-2 font-medium">Get Bonus</p>
-          </div>
-          <div id="payBill-button"
-            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-100 cursor-pointer transition-all duration-200"
-          >
-            <img src="./assets/purse1.png" class="h-[2rem] w-[2rem]" alt="Pay Bill" />
-            <p class="mt-2 font-medium">Pay Bill</p>
-          </div>
-          <div id="transactions-button"
-            class="form-btn border-2 border-gray-300 flex flex-col justify-center items-center rounded-[12px] px-[10px] py-[20px] hover:bg-gray-100 cursor-pointer transition-all duration-200"
-          >
-            <img
-              src="./assets/transaction1.png"
-              class="h-[2rem] w-[2rem]"
-              alt="Transactions"
-            />
-            <p class="mt-2 font-medium">Transactions</p>
-          </div>
-        </div>
-      </div>
     </header>
-    <main class="bg-[#f4f5f7] pb-[30px]">
 
-      <!-- Add Money Form -->
-      <div id="add-money-parent" class="form max-w-lg mx-auto hidden">
-        <div class="font-bold text-2xl py-[20px] px-4">Add Money</div>
-        <div class="bg-white p-6 rounded-[24px] mx-4">
-          <div>
-            <label class="font-semibold" for="">Select A Bank</label><br>
-            <select id="bank" class="select bg-[#F4F5F7] rounded-[32px] w-[100%] mt-2" >
-              <option disabled selected>Select bank</option>
-              <option>City Bank</option>
-              <option>BRAC Bank</option>
-              <option>Islami Bank</option>
-              <option>Dutch-Bangla Bank</option>
-            </select>
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">Bank Account Number</label><br>
-            <input id="account-number"
-              type="text"
-              placeholder="Enter 11 digit account number"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">Amount to Add</label><br>
-            <input id="add-amount"
-              type="number"
-              placeholder="Enter amount"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">PIN Number</label><br>
-            <input id="add-pin"
-              type="password"
-              placeholder="Enter 4 digit PIN"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <button id="addMoney-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-6 w-[100%] success-btn">
-            Add Money
+    <!-- Main Content -->
+    <main class="pb-24 max-w-lg mx-auto">
+      <!-- Welcome Section -->
+      <section class="px-4 pt-2 pb-4">
+        <h1 class="text-xl font-bold text-gray-800">🔥 Welcome to Payooo!</h1>
+        <p class="text-gray-600 text-sm mt-1 leading-relaxed">
+          Enjoy easy and secure financial services. Low cashout charges and instant transfers.
+        </p>
+      </section>
+
+      <!-- Quick Actions Grid -->
+      <section class="px-4 pb-6">
+        <div class="grid grid-cols-3 gap-3">
+          <!-- Add Money -->
+          <button id="add-button" class="form-btn flex flex-col items-center justify-center p-4 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group">
+            <div class="p-2.5 rounded-full bg-blue-50 group-hover:bg-blue-100 mb-2">
+              <img src="./assets/wallet1.png" class="h-7 w-7" alt="Add Money">
+            </div>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-blue-600">Add Money</span>
+          </button>
+
+          <!-- Cash Out -->
+          <button id="cash-out-button" class="form-btn flex flex-col items-center justify-center p-4 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group">
+            <div class="p-2.5 rounded-full bg-blue-50 group-hover:bg-blue-100 mb-2">
+              <img src="./assets/send1.png" class="h-7 w-7" alt="Cash Out">
+            </div>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-blue-600">Cash Out</span>
+          </button>
+
+          <!-- Transfer -->
+          <button id="transfer-button" class="form-btn flex flex-col items-center justify-center p-4 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group">
+            <div class="p-2.5 rounded-full bg-blue-50 group-hover:bg-blue-100 mb-2">
+              <img src="./assets/money1.png" class="h-7 w-7" alt="Transfer">
+            </div>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-blue-600">Transfer</span>
+          </button>
+
+          <!-- Get Bonus -->
+          <button id="bonus-button" class="form-btn flex flex-col items-center justify-center p-4 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group">
+            <div class="p-2.5 rounded-full bg-blue-50 group-hover:bg-blue-100 mb-2">
+              <img src="./assets/bonus1.png" class="h-7 w-7" alt="Bonus">
+            </div>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-blue-600">Get Bonus</span>
+          </button>
+
+          <!-- Pay Bill -->
+          <button id="payBill-button" class="form-btn flex flex-col items-center justify-center p-4 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group">
+            <div class="p-2.5 rounded-full bg-blue-50 group-hover:bg-blue-100 mb-2">
+              <img src="./assets/purse1.png" class="h-7 w-7" alt="Pay Bill">
+            </div>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-blue-600">Pay Bill</span>
+          </button>
+
+          <!-- Transactions -->
+          <button id="transactions-button" class="form-btn flex flex-col items-center justify-center p-4 bg-white rounded-xl border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group">
+            <div class="p-2.5 rounded-full bg-blue-50 group-hover:bg-blue-100 mb-2">
+              <img src="./assets/transaction1.png" class="h-7 w-7" alt="Transactions">
+            </div>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-blue-600">History</span>
           </button>
         </div>
-      </div>
+      </section>
 
-      <!-- Cash Out Form -->
-      <div id="cash-out-parent" class="form max-w-lg mx-auto hidden">
-        <div class="font-bold text-2xl py-[20px] px-4">Cash Out</div>
-        <div class="bg-white p-6 rounded-[24px] mx-4">
-          <div>
-            <label class="font-semibold" for="">Agent Number</label><br>
-            <input id="agent-number"
-              type="text"
-              placeholder="Enter 11 digit agent number"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">Amount</label><br>
-            <input id="cash-out-amount"
-              type="number"
-              placeholder="Enter amount to withdraw"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">PIN Number</label><br>
-            <input id="cashout-pin"
-              type="password"
-              placeholder="Enter 4 digit PIN"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <button id="withdrawMoney-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-6 w-[100%] success-btn">
-            Withdraw Money
-          </button>
-        </div>
-      </div>
-
-      <!-- Transfer Money Form -->
-      <div id="transfer-money-parent" class="form max-w-lg mx-auto hidden">
-        <div class="font-bold text-2xl py-[20px] px-4">Transfer Money</div>
-        <div class="bg-white p-6 rounded-[24px] mx-4">
-          <div>
-            <label class="font-semibold" for="">User Account Number</label><br>
-            <input id="user-account"
-              type="text"
-              placeholder="Enter 11 digit account number"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">Amount</label><br>
-            <input id="transferred-amount"
-              type="number"
-              placeholder="Enter amount to transfer"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">PIN Number</label><br>
-            <input id="transfer-pin"
-              type="password"
-              placeholder="Enter 4 digit PIN"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <button id="transfer-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-6 w-[100%] success-btn">
-            Send Now
-          </button>
-        </div>
-      </div>
-
-      <!-- Get Bonus Form -->
-      <div id="get-bonus-parent" class="form max-w-lg mx-auto hidden">
-        <div class="font-bold text-2xl py-[20px] px-4">Get Bonus</div>
-        <div class="bg-white p-6 rounded-[24px] mx-4">
-          <div>
-            <label class="font-semibold" for="">Enter Bonus Coupon</label><br>
-            <input id="bonus-coupon"
-              type="text"
-              placeholder="Enter coupon code (BONUS100, WELCOME50, PAYOOO25)"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4 text-sm text-gray-600">
-            <p>Available coupons: <span class="font-semibold">BONUS100</span> ($100), 
-            <span class="font-semibold">WELCOME50</span> ($50), 
-            <span class="font-semibold">PAYOOO25</span> ($25)</p>
-          </div>
-          <button id="get-bonus-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-6 w-[100%] success-btn">
-            Get Bonus
-          </button>
-        </div>
-      </div>
-
-      <!-- Pay Bill Form -->
-      <div id="pay-bill-parent" class="form max-w-lg mx-auto hidden">
-        <div class="font-bold text-2xl py-[20px] px-4">Pay Bill</div>
-        <div class="bg-white p-6 rounded-[24px] mx-4">
-          <div>
-            <label class="font-semibold" for="">Select Payment Method</label><br>
-            <select id="payment-way" class="select bg-[#F4F5F7] rounded-[32px] w-[100%] mt-2" >
-              <option disabled selected>Select method</option>
-              <option>Bkash</option>
-              <option>Nagad</option>
-              <option>Rocket</option>
-              <option>Upay</option>
-            </select>
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">Biller Account Number</label><br>
-            <input id="biller-account-number"
-              type="text"
-              placeholder="Enter account number"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">Amount to Pay</label><br>
-            <input id="pay-amount"
-              type="number"
-              placeholder="Enter amount"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <div class="mt-4">
-            <label class="font-semibold" for="">PIN Number</label><br>
-            <input id="pay-bill-pin"
-              type="password"
-              placeholder="Enter 4 digit PIN"
-              class="input input-md bg-[#F4F5F7] p-4 rounded-[32px] mt-2 w-[100%]"
-            />
-          </div>
-          <button id="payBill-btn" class="btn bg-[#1A77F2] text-white border-[#005fd8] rounded-[32px] mt-6 w-[100%] success-btn">
-            Pay Now
-          </button>
-        </div>
-      </div>
-
-      <!-- Transactions History -->
-      <div id="transaction-parent" class="form max-w-lg mx-auto hidden">
-        <div class="flex justify-between items-center px-4">
-          <div>
-            <p class="font-bold text-2xl py-[20px]">Transaction History</p>
-            <p class="text-sm text-gray-500 -mt-4" id="transaction-count">0 transactions</p>
-          </div>
-          <button id="view-all" class="hover:bg-gray-200 cursor-pointer rounded-[40px] p-[10px] text-[#08080880] font-medium">
-            View All
-          </button>
-        </div>
-        <div id="transaction-container" class="px-4">
-          <!-- Transactions will be loaded here by JavaScript -->
-          <div class="bg-white p-8 rounded-xl text-center">
-            <p class="text-gray-500">No transactions yet</p>
-            <p class="text-sm text-gray-400 mt-2">Your transactions will appear here</p>
+      <!-- Forms Section (Hidden by default) -->
+      <div class="px-4">
+        <!-- Add Money Form -->
+        <div id="add-money-parent" class="form hidden">
+          <div class="bg-white rounded-2xl shadow-sm p-5">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Add Money</h2>
+            
+            <div class="space-y-4">
+              <!-- Bank Selection -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Select Bank</label>
+                <select id="bank" class="select w-full bg-gray-50 border-gray-200 rounded-xl h-12 text-gray-700">
+                  <option disabled selected>Choose your bank</option>
+                  <option>City Bank Limited</option>
+                  <option>BRAC Bank Limited</option>
+                  <option>Islami Bank Bangladesh</option>
+                  <option>Dutch-Bangla Bank</option>
+                </select>
+              </div>
+              
+              <!-- Account Number -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Account Number</label>
+                <input id="account-number" type="text" inputmode="numeric" maxlength="11"
+                  placeholder="Enter 11 digit account number"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- Amount -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Amount</label>
+                <input id="add-amount" type="number"
+                  placeholder="Enter amount"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- PIN -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">PIN Number</label>
+                <input id="add-pin" type="password" maxlength="4" inputmode="numeric"
+                  placeholder="Enter 4 digit PIN"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <button id="addMoney-btn" class="btn w-full bg-blue-600 text-white border-none rounded-xl h-12 mt-6 text-base font-medium action-btn hover:bg-blue-700">
+              Add Money
+            </button>
           </div>
         </div>
-      </div>
 
+        <!-- Cash Out Form -->
+        <div id="cash-out-parent" class="form hidden">
+          <div class="bg-white rounded-2xl shadow-sm p-5">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Cash Out</h2>
+            
+            <div class="space-y-4">
+              <!-- Agent Number -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Agent Number</label>
+                <input id="agent-number" type="text" inputmode="numeric" maxlength="11"
+                  placeholder="Enter 11 digit agent number"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- Amount -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Amount</label>
+                <input id="cash-out-amount" type="number"
+                  placeholder="Enter amount to withdraw"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- PIN -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">PIN Number</label>
+                <input id="cashout-pin" type="password" maxlength="4" inputmode="numeric"
+                  placeholder="Enter 4 digit PIN"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+            </div>
+            
+            <button id="withdrawMoney-btn" class="btn w-full bg-blue-600 text-white border-none rounded-xl h-12 mt-6 text-base font-medium action-btn hover:bg-blue-700">
+              Withdraw Money
+            </button>
+          </div>
+        </div>
+
+        <!-- Transfer Money Form -->
+        <div id="transfer-money-parent" class="form hidden">
+          <div class="bg-white rounded-2xl shadow-sm p-5">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Transfer Money</h2>
+            
+            <div class="space-y-4">
+              <!-- Recipient Account -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Recipient Account</label>
+                <input id="user-account" type="text" inputmode="numeric" maxlength="11"
+                  placeholder="Enter 11 digit account number"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- Amount -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Amount</label>
+                <input id="transferred-amount" type="number"
+                  placeholder="Enter amount to transfer"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- PIN -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">PIN Number</label>
+                <input id="transfer-pin" type="password" maxlength="4" inputmode="numeric"
+                  placeholder="Enter 4 digit PIN"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+            </div>
+            
+            <button id="transfer-btn" class="btn w-full bg-blue-600 text-white border-none rounded-xl h-12 mt-6 text-base font-medium action-btn hover:bg-blue-700">
+              Send Money
+            </button>
+          </div>
+        </div>
+
+        <!-- Get Bonus Form -->
+        <div id="get-bonus-parent" class="form hidden">
+          <div class="bg-white rounded-2xl shadow-sm p-5">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Get Bonus</h2>
+            
+            <div class="space-y-4">
+              <!-- Coupon Code -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Coupon Code</label>
+                <input id="bonus-coupon" type="text"
+                  placeholder="Enter coupon code"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- Coupon Hint -->
+              <div class="bg-blue-50 rounded-xl p-3">
+                <p class="text-sm text-blue-800 font-medium">Available Coupons:</p>
+                <ul class="text-xs text-blue-700 mt-1 space-y-1">
+                  <li>• <span class="font-semibold">BONUS100</span> - Get $100 bonus</li>
+                  <li>• <span class="font-semibold">WELCOME50</span> - Get $50 bonus</li>
+                  <li>• <span class="font-semibold">PAYOOO25</span> - Get $25 bonus</li>
+                </ul>
+              </div>
+            </div>
+            
+            <button id="get-bonus-btn" class="btn w-full bg-green-600 text-white border-none rounded-xl h-12 mt-6 text-base font-medium action-btn hover:bg-green-700">
+              Redeem Bonus
+            </button>
+          </div>
+        </div>
+
+        <!-- Pay Bill Form -->
+        <div id="pay-bill-parent" class="form hidden">
+          <div class="bg-white rounded-2xl shadow-sm p-5">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Pay Bill</h2>
+            
+            <div class="space-y-4">
+              <!-- Payment Method -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Payment Method</label>
+                <select id="payment-way" class="select w-full bg-gray-50 border-gray-200 rounded-xl h-12 text-gray-700">
+                  <option disabled selected>Select payment method</option>
+                  <option>Bkash</option>
+                  <option>Nagad</option>
+                  <option>Rocket</option>
+                  <option>Upay</option>
+                </select>
+              </div>
+              
+              <!-- Biller Account -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Biller Account</label>
+                <input id="biller-account-number" type="text" inputmode="numeric" maxlength="11"
+                  placeholder="Enter account number"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- Amount -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Amount</label>
+                <input id="pay-amount" type="number"
+                  placeholder="Enter bill amount"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+              
+              <!-- PIN -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">PIN Number</label>
+                <input id="pay-bill-pin" type="password" maxlength="4" inputmode="numeric"
+                  placeholder="Enter 4 digit PIN"
+                  class="input w-full bg-gray-50 border-gray-200 rounded-xl h-12 px-4 text-gray-700 form-input">
+              </div>
+            </div>
+            
+            <button id="payBill-btn" class="btn w-full bg-blue-600 text-white border-none rounded-xl h-12 mt-6 text-base font-medium action-btn hover:bg-blue-700">
+              Pay Bill
+            </button>
+          </div>
+        </div>
+
+        <!-- Transactions History -->
+        <div id="transaction-parent" class="form hidden">
+          <div class="bg-white rounded-2xl shadow-sm p-5">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="text-xl font-bold text-gray-800">Transaction History</h2>
+                <p id="transaction-count" class="text-sm text-gray-500 mt-0.5">0 transactions</p>
+              </div>
+              <button id="view-all" class="text-sm font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50">
+                View All
+              </button>
+            </div>
+            
+            <!-- Transactions Container -->
+            <div id="transaction-container">
+              <!-- Empty State -->
+              <div class="text-center py-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-3">
+                  <img src="./assets/transaction1.png" class="h-8 w-8 opacity-50" alt="">
+                </div>
+                <p class="text-gray-500 font-medium">No transactions yet</p>
+                <p class="text-sm text-gray-400 mt-1">Your transactions will appear here</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
+
+    <!-- JavaScript -->
     <script src="./home.js"></script>
   </body>
 </html>
